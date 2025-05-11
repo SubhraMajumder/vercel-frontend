@@ -1,22 +1,23 @@
-import { useState, useEffect } from  'react';
+import { BrowserRouter, Routes, Route } from "react-router-dom";
+import Header from "./components/Header";
+import Home from "./components/Home";
+import NoPage from "./components/NoPage";
+import UserList from "./components/Userlist";
+import Adduser from "./components/Adduser";
 
-const App = () => {
-  const [userList, setUserList] = useState([]);
-  useEffect(()=> {
-    fetch('http://localhost:8000/api/users')
-      .then(response => response.json())
-      .then(json => setUserList(json))
-      .catch(error => console.error(error));
-  }, [])
+const App = () => { 
   return(
     <>
-      <ul>
-        {userList.map((value, index )=>(
-          <li key={index}>
-            <p><strong>{ value.first_name + " " + value.last_name }</strong></p>
-          </li>
-        ))}
-      </ul>
+     <BrowserRouter>
+      <Routes>
+        <Route path="/" element={<Header />}>
+          <Route index element={<Home />} />
+          <Route path="userlist" element={<UserList />} />
+          <Route path="add-user" element={<Adduser />} />
+          <Route path="*" element={<NoPage />} />
+        </Route>
+      </Routes>
+     </BrowserRouter>
     </>
   )
 }
